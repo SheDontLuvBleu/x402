@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#090b0d">
+  <meta name="description" content="402 Paywall Agent Protocol - machine-native payments for autonomous agents.">
+  <title>402 PAYWALL AGENT PROTOCOL</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+    :root {
+      --ink: #e8ede8;
+      --muted: #7e8982;
+      --faint: #252c29;
+      --panel: #0d1110;
+      --green: #b7f36b;
+      --green-dim: #557837;
+      --amber: #e3a85f;
+      --red: #e46f5f;
+      --line: rgba(190, 220, 197, .13);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: #090b0d;
+      font-family: 'Space Grotesk', sans-serif;
+      min-width: 320px;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .4;
+      background-image: linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.014) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 80%);
+    }
+    a { color: inherit; text-decoration: none; }
+    .mono { font-family: 'DM Mono', monospace; }
+    .shell { max-width: 1180px; margin: 0 auto; padding: 0 28px; position: relative; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand { display: flex; align-items: center; gap: 11px; font-size: 12px; letter-spacing: .14em; font-weight: 600; }
+    .brand-mark { color: var(--green); font-size: 20px; line-height: 0; }
+    nav { display: flex; gap: 28px; color: var(--muted); font: 11px 'DM Mono', monospace; }
+    nav a:hover { color: var(--green); }
+
+    .hero { padding: 100px 0 92px; display: grid; grid-template-columns: 1.1fr .9fr; gap: 72px; align-items: end; }
+    .eyebrow { color: var(--green); font: 11px 'DM Mono', monospace; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 25px; }
+    h1 { font-size: clamp(44px, 7vw, 86px); letter-spacing: -.065em; line-height: .92; margin: 0 0 30px; max-width: 780px; font-weight: 600; }
+    h1 span { color: var(--green); }
+    .lede { color: #aab3ad; font-size: 17px; line-height: 1.55; max-width: 540px; margin: 0; }
+    .actions { display: flex; gap: 12px; margin-top: 38px; flex-wrap: wrap; }
+    .button { border: 1px solid var(--green); padding: 13px 17px; font: 11px 'DM Mono', monospace; letter-spacing: .04em; transition: background .2s, color .2s, transform .2s; }
+    .button:hover { background: var(--green); color: #10140e; transform: translateY(-2px); }
+    .button.secondary { color: var(--muted); border-color: var(--line); }
+    .button.secondary:hover { border-color: var(--muted); background: transparent; color: var(--ink); }
+    .button .arrow { margin-left: 14px; color: var(--green); }
+
+    .ticker-note { border-left: 1px solid var(--green-dim); padding: 2px 0 2px 18px; color: var(--muted); font: 11px 'DM Mono', monospace; line-height: 1.8; }
+    .ticker-note strong { color: var(--ink); font-size: 17px; font-weight: 500; }
+
+    .stats-wrap { padding: 0 0 100px; }
+    .section-label { color: var(--muted); font: 10px 'DM Mono', monospace; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 15px; }
+    .stats-card { border: 1px solid var(--line); background: rgba(13, 17, 16, .78); display: grid; grid-template-columns: 1.55fr 1fr 1fr; position: relative; overflow: hidden; }
+    .stats-card::after { content: ''; position: absolute; width: 170px; height: 170px; right: -80px; bottom: -100px; border: 1px solid rgba(183, 243, 107, .25); transform: rotate(45deg); }
+    .stat { padding: 28px 30px; border-right: 1px solid var(--line); min-height: 140px; }
+    .stat:last-child { border: 0; }
+    .stat-label { color: var(--muted); font: 10px 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 17px; }
+    .endpoint { color: var(--green); font: 13px 'DM Mono', monospace; white-space: nowrap; }
+    .price { font-size: 26px; letter-spacing: -.03em; font-weight: 500; }
+    .price small { font: 11px 'DM Mono', monospace; color: var(--muted); letter-spacing: 0; }
+    .status { display: flex; align-items: center; gap: 9px; color: var(--green); font: 12px 'DM Mono', monospace; }
+    .dot { width: 8px; height: 8px; background: var(--green); border-radius: 50%; box-shadow: 0 0 0 5px rgba(183, 243, 107, .08); animation: pulse 2.2s infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 9px rgba(183, 243, 107, 0); } }
+
+    .docs { border-top: 1px solid var(--line); padding: 72px 0 110px; display: grid; grid-template-columns: .75fr 1.25fr; gap: 80px; }
+    .docs h2 { font-size: 38px; line-height: 1; letter-spacing: -.05em; margin: 0 0 18px; font-weight: 500; }
+    .docs-copy { color: var(--muted); font-size: 14px; line-height: 1.65; max-width: 310px; }
+    .code-box { border: 1px solid var(--line); background: #070908; position: relative; }
+    .code-top { height: 40px; display: flex; align-items: center; justify-content: space-between; padding: 0 14px; border-bottom: 1px solid var(--line); color: var(--muted); font: 10px 'DM Mono', monospace; }
+    .code-top span:first-child::before { content: '●  ●  ●'; color: #4a554d; letter-spacing: 4px; }
+    .copy { border: 0; background: transparent; color: var(--muted); cursor: pointer; font: 10px 'DM Mono', monospace; padding: 6px; }
+    .copy:hover { color: var(--green); }
+    pre { overflow-x: auto; margin: 0; padding: 24px; color: #c5d0c5; font: 12px/1.75 'DM Mono', monospace; tab-size: 2; }
+    .kw { color: var(--green); } .str { color: var(--amber); } .comment { color: #58645c; } .fn { color: #d6e9d3; }
+    footer { border-top: 1px solid var(--line); padding: 21px 0 30px; color: var(--muted); font: 10px 'DM Mono', monospace; display: flex; justify-content: space-between; }
+
+    @media (max-width: 760px) {
+      .shell { padding: 0 19px; }
+      header { height: 62px; } nav { gap: 14px; } nav a:first-child { display: none; }
+      .hero { padding: 70px 0 66px; display: block; } .hero aside { margin-top: 50px; }
+      .stats-card { grid-template-columns: 1fr; } .stat { border-right: 0; border-bottom: 1px solid var(--line); min-height: 0; padding: 23px; }
+      .docs { padding: 58px 0 75px; display: block; } .docs-copy { margin-bottom: 36px; }
+      pre { font-size: 10px; padding: 18px; } footer { gap: 20px; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <a class="brand" href="#top"><span class="brand-mark">⟡</span> X402 / AP</a>
+      <nav><a href="#status">STATUS</a><a href="#docs">INTEGRATE</a><a href="https://x.com/x402protocol" target="_blank" rel="noreferrer">X ↗</a></nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div>
+          <div class="eyebrow">[ protocol / 001 ] — machine-native access</div>
+          <h1>402 PAYWALL<br><span>AGENT PROTOCOL</span></h1>
+          <p class="lede">The payment rail for autonomous agents. Wrap any API in a deterministic paywall and let software pay for exactly what it uses.</p>
+          <div class="actions">
+            <a class="button" href="https://pump.fun/coin/X402" target="_blank" rel="noreferrer">TRADE $X402 <span class="arrow">↗</span></a>
+            <a class="button secondary" href="https://x.com/x402protocol" target="_blank" rel="noreferrer">FOLLOW ON X <span class="arrow">↗</span></a>
+          </div>
+        </div>
+        <aside class="ticker-note mono">
+          TOKEN / <strong>$X402</strong><br>
+          A utility layer for bots<br>
+          that refuse to wait for humans.
+        </aside>
+      </section>
+
+      <section class="stats-wrap" id="status">
+        <div class="section-label">// live resource telemetry</div>
+        <div class="stats-card">
+          <div class="stat"><div class="stat-label">active endpoint</div><div class="endpoint">api.x402.agent/v1/infer</div></div>
+          <div class="stat"><div class="stat-label">price / ping</div><div class="price">1,000 <small>$X402</small></div></div>
+          <div class="stat"><div class="stat-label">network status</div><div class="status"><i class="dot"></i> SYSTEM ONLINE</div></div>
+        </div>
+      </section>
+
+      <section class="docs" id="docs">
+        <div>
+          <div class="section-label">// for agent developers</div>
+          <h2>PAY. RETRY.<br>PROCEED.</h2>
+          <p class="docs-copy">A 402 is not a dead end. Read the payment instructions, sign the transaction with your agent wallet, then replay the request with proof attached.</p>
+        </div>
+        <div class="code-box">
+          <div class="code-top"><span>javascript / x402-client.js</span><button class="copy" type="button" id="copyButton">COPY</button></div>
+          <pre id="code"><span class="kw">const</span> resource = <span class="str">'https://api.x402.agent/v1/infer'</span>;
+
+<span class="kw">async function</span> <span class="fn">paidFetch</span>(url, options = {}) {
+  <span class="kw">let</span> response = <span class="kw">await</span> fetch(url, options);
+
+  <span class="comment">// The server tells us exactly how to pay.</span>
+  <span class="kw">if</span> (response.status === <span class="str">402</span>) {
+    <span class="kw">const</span> payment = response.headers.get(<span class="str">'PAYMENT-REQUIRED'</span>);
+    <span class="kw">const</span> requirements = JSON.parse(atob(payment));
+
+    <span class="comment">// Sign with the agent wallet, never expose the key.</span>
+    <span class="kw">const</span> signature = <span class="kw">await</span> agentWallet.signPayment(requirements);
+    response = <span class="kw">await</span> fetch(url, {
+      ...options,
+      headers: { ...options.headers,
+        <span class="str">'PAYMENT-SIGNATURE'</span>: btoa(JSON.stringify(signature)) }
+    });
+  }
+  <span class="kw">return</span> response.json();
+}
+
+<span class="kw">const</span> result = <span class="kw">await</span> paidFetch(resource, { method: <span class="str">'POST'</span> });</pre>
+        </div>
+      </section>
+    </main>
+
+    <footer><span>© 2026 X402 PROTOCOL</span><span>BUILT FOR AGENTS / RUN BY CODE</span></footer>
+  </div>
+  <script>
+    const copyButton = document.getElementById('copyButton');
+    const code = document.getElementById('code');
+    copyButton.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(code.textContent);
+      copyButton.textContent = 'COPIED';
+      setTimeout(() => { copyButton.textContent = 'COPY'; }, 1600);
+    });
+  </script>
+</body>
+</html>
